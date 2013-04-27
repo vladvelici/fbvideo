@@ -13,7 +13,21 @@ var server = BinaryServer({port: binaryServerPort});
 server.on('connection', function(client){
   // Stream a flower as a hello!
   clients.push(client);
+
+	client.on('stream', function(stream, meta){
+		//
+		var file = fs.createWriteStream(__dirname+ '/public/' + meta.name);
+		stream.pipe(file);
+		//
+		// Send progress back
+		stream.on('data', function(data){
+		  stream.write({rx: data.length / meta.size});
+		});
+		//
+	});
 });
+
+
 
 var connect = require('connect'),
     http = require('http');

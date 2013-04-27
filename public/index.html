@@ -2,25 +2,42 @@
 <head>
   <script src="http://cdn.binaryjs.com/0/binary.js"></script>
   <script>
-    // Connect to Binary.js server
-    var client = new BinaryClient('ws://localhost:9000');
-    // Received new stream from server!
-    client.on('stream', function(stream, meta){    
-      // Buffer for parts
-      var parts = [];
-      // Got new data
-      stream.on('data', function(data){
-        parts.push(data);
+  window.addEventListener("load", function() {
+
+      // set up the damn canvases
+      var myCanvas = document.getElementById('me');
+      var otherCanvas = document.getElementById("other_guy");
+
+      var myCanvasCtx = myCanvas.getContext("2d");
+      var otherCanvasCtx = otherCanvas.getContext("2d");
+
+      // Connect to Binary.js server
+      var client = new BinaryClient('ws://localhost:9000');
+      // Received new stream from server!
+      client.on('stream', function(stream, meta){    
+        // Buffer for parts
+        var parts = [];
+        // Got new data
+        stream.on('data', function(data){
+          parts.push(data);
+        });
+        stream.on('end', function(){
+          // Display new data in browser!
+          var img = document.createElement("img");
+          img.src = (window.URL || window.webkitURL).createObjectURL(new Blob(parts)); 
+          otherCanvas.drawImage(img, 0, 0, 200, 200);
+        });
       });
-      stream.on('end', function(){
-        // Display new data in browser!
-        var img = document.createElement("img");
-        img.src = (window.URL || window.webkitURL).createObjectURL(new Blob(parts));
-        document.body.appendChild(img);
-      });
+
     });
   </script>
 </head>
 <body>
+  <h1>other</h1>
+  <canvas id="other_guy" width="100" height="100">
+  </canvas>
+  <h1>me</h1>
+  <canvas id="me" width="100" height="100">
+  </canvas>
 </body>
 </html>
