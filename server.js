@@ -23,7 +23,6 @@ server.on('connection', function(client){
 		stream.on('data', function(data){
 		  stream.write({rx: data.length / meta.size});
 		});
-		//
 	});
 });
 
