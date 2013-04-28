@@ -48,6 +48,10 @@ var sockOperations = {};
       showloader($(".senderwrap"));
     });
 
+    socket.on("partnerDisconnected", function() {
+      console.log("partner disconnected");
+    });
+
     socket.on('videoOut', function(data) {
       var img = document.createElement("img");
       img.onload = function() {

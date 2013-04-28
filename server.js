@@ -74,7 +74,7 @@ io.sockets.on('connection', function (socket) {
 				fbidSocket[fbid].partner.get("fbid", function(err, fbidf) {
 					if (err) return;
 					fbidSocket[fbidf].partner = null;
-					fbidSocket[fbidf].emit("partnerDisconnected");
+					fbidSocket[fbidf].me.emit("partnerDisconnected");
 					fbidSocket[fbid] = undefined;
 				});
 			} else {
