@@ -1,26 +1,79 @@
 <html>
-<head>
-  <title>Web Video Calls</title>
-  <script type="text/javascript" src="shims.js"></script>
-  <script type="text/javascript" src='Iuppiter.js'></script>
-	<script src="http://localhost:9000/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="stream.js"></script>
-</head>
-<body>
-  <canvas id="receiver"></canvas>
-  <video id="video"></video>
-  <div id="message"></div>
-  <input id='jpegQuality' type='text' value='0.3'/>
-  <input id='interval' type='text' '160' />
-  <script type="text/javascript">
-  	var jpegQelement = document.getElementById("jpegQuality");
-  	var intervalElement = document.getElementById("interval");
-  	jpegQelement.addEventListener("change", function() {
-  		settings.jpegQuality = parseFloat(jpegQelement.value);
-  	});
-  	intervalElement.addEventListener("change", function() {
-  		settings.grabRate = parseInt(intervalElement.value);
-  	});
-  </script>
-</body>
+	<head>
+		<link href="main.css" rel="stylesheet" type="text/css">
+		<link href="icon.css" rel="stylesheet" type="text/css">
+		<script src="jquery.min.js"></script>
+		
+		<title>Web Video Calls</title>
+		<script type="text/javascript" src="shims.js"></script>
+		<script src="http://cdn.binaryjs.com/0/binary.js"></script>
+		<script type="text/javascript" src="stream.js"></script>
+		
+		<script>
+			function convertCanvasToImage(canvas) {
+				var image = new Image();
+				image.src = canvas.toDataURL("image/png");
+				return image;
+			}
+			
+			function deleteloader(videowrapper) {
+				$(".loader",videowrapper).remove(); 
+			}
+			
+			function endcall() {
+				alert("ending");
+				window.location.href = "http://facebook.com";
+			}
+			
+			$(document).ready(function() {
+				$("#snapshotbut").click(function() {
+					window.location.href =  convertCanvasToImage(document.getElementById("sender")).src.replace('image/png', 'image/octet-stream');
+				});
+				
+				$("#endbut").click(function() {
+					endcall();
+				});
+				
+				$("#gamebut").click(function() {
+					//deleteloader($(".senderwrap"));
+				});
+				
+				deleteloader($(".senderwrap"));
+				
+				initpong();
+			});
+		</script>
+	</head>
+	<body>
+		<div class="banner"><div class="title"><i>time to smile</i></div></div>
+		<div class="wrap">
+			<div class="senderwrap">
+				<canvas width="600" height="450" class="videosender" id="sender"></canvas>
+				<div class="loader"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="container">
+			<div class="wrap">
+				<div class="receiverwrap">
+					<video width="200" height="150" class="videoreceiver" id="video"></video>
+					<div class="loader"></div>
+				</div>
+				<div class="fctwrap">
+					<a href="#" id="endbut" class="button"><i class="icon-ban-circle icon-white"></i> End</a>
+					<a href="#" id="snapshotbut" class="button"><i class="icon-camera icon-white"></i> Snapshot</a>
+					<a href="#" id="gamebut" class="button"><i class="icon-bell icon-white"></i> Ring</a>
+					<a href="#" id="gamebut" class="button right"><i class="icon-gift icon-white"></i></a>
+				</div>
+				<div class="messagebox">
+					<textarea name="message" id="textbox" cols="30" rows="10"></textarea>
+				</div>
+				<div class="fctwrapn">
+					
+					<a href="#" id="gamebut" class="button right"><i class="icon-comment icon-white"></i> Send</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</body>
 </html>
