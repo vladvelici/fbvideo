@@ -56,7 +56,6 @@ var settings = {
     var grabLoop = function() {
       if (typeof socket === 'undefined') return;
       senderContext.drawImage(videoEl,0,0,settings.canvasWidth,settings.canvasHeight);
-      // var sdata = senderEl.toDataURL("image/jpeg", settings.jpegQuality);
       var webpData = senderEl.toDataURL("image/webp", settings.jpegQuality);
 
       socket.emit("videoIn", {"base64img": webpData});
@@ -72,7 +71,6 @@ var settings = {
     };
 
     // no camera access...
-
     var gUfail = function() {
       console.log('no webcam access :-(');
     };
