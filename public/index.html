@@ -31,7 +31,7 @@
 			
 			$(document).ready(function() {
 				$("#snapshotbut").click(function() {
-					window.location.href =  convertCanvasToImage(document.getElementById("sender")).src.replace('image/png', 'image/octet-stream');
+					window.location.href =  convertCanvasToImage(document.getElementById("receiver")).src.replace('image/png', 'image/octet-stream');
 				});
 				
 				$("#endbut").click(function() {
@@ -55,7 +55,7 @@
 		<div class="wrap">
 			<div class="senderwrap">
 				<canvas width="600" height="450" class="videosender" id="receiver"></canvas>
-				<div class="loader"></div>
+				<!-- <div class="loader"></div> -->
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -63,12 +63,12 @@
 			<div class="wrap">
 				<div class="receiverwrap">
 					<video width="200" height="150" class="videoreceiver" id="video"></video>
-					<div class="loader"></div>
+					<!-- <div class="loader"></div> -->
 				</div>
 				<div class="fctwrap">
 					<a href="#" id="endbut" class="button"><i class="icon-ban-circle icon-white"></i> End</a>
 					<a href="#" id="snapshotbut" class="button"><i class="icon-camera icon-white"></i> Snapshot</a>
-					<a href="#" id="gamebut" class="button"><i class="icon-bell icon-white"></i> Ring</a>
+					<a href="#" id="gamebut" class="button" onclick="ringSomeone();"><i class="icon-bell icon-white"></i> Ring</a>
 					<a href="#" id="gamebut" class="button right"><i class="icon-gift icon-white"></i></a>
 				</div>
 				<div class="messagebox">
@@ -79,6 +79,12 @@
 					<a href="#" id="gamebut" class="button right"><i class="icon-comment icon-white"></i> Send</a>
 				</div>
 				<div class="clear"></div>
+				<script type="text/javascript">
+					function ringSomeone() {
+						var person = prompt("Who do you want to call?");
+						sockOperations.initCall(person);
+					}
+				</script>
 			</div>
 		</div>
 	</body>

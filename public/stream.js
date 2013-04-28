@@ -1,5 +1,5 @@
 var settings = {
-  grabRate : 150,
+  grabRate : 70,
   canvasWidth : 200,
   canvasHeight : 160,
   socketSrv : 'http://localhost:9000',
@@ -88,6 +88,12 @@ var sockOperations = {};
 
     socket.on("beingCalled", function(data) {
       console.log("You're called by " + data.by);
+      var answer = confirm("Answer the call from " + data.by + "?");
+      if (answer) {
+        sockOperations.answerCall(data.by, "yes");
+      } else {
+        sockOperations.answerCall(data.by, "no");
+      }
     });
 
     socket.on("error_calling", function() {
