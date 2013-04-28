@@ -42,8 +42,7 @@
     });
 
     client.on('stream', function(s, meta) {
-
-      if (meta === 'fromserver') {
+      if (meta === 'fromServer') {
         s.on('data', function(data) {
             console.log("got it back:", data);
           // data is from the type 'ArrayBuffer'
