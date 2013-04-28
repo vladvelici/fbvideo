@@ -6,6 +6,8 @@ var settings = {
   jpegQuality : 0.3
 };
 
+var sockOperations = {};
+
 (function(document) {
   document.addEventListener('DOMContentLoaded', function() {
 
@@ -64,6 +66,44 @@ var settings = {
       socket.emit("videoIn", {"base64img": webpData});
       setTimeout(grabLoop, settings.grabRate);
     };
+
+    sockOperations.addFbAuth = function(fbid) {
+      socket.emit("addFbAuth", "fake432532");      
+    }
+
+    socket.on("welcome", function() {
+      console.log("welcome received");
+    });
+
+    sockOperations.initCall = function(partner_fbid) {
+      socket.emit("incomingCall", partner_fbid);
+    }
+
+    socket.on("calling", function() {
+      console.log("show some calling gui or something.. waiting for an answer");
+    });
+
+    socket.on("beingCalled", function(data) {
+      console.log("You're called by " + data.by);
+    });
+
+    socket.on("error_calling", function() {
+      console.log("Caller offline or we simply can't be bother to give you a better error message.");
+    });
+
+    socket.on("partnerAnswered", function(data) {
+      if (data === "yes") {
+        console.log(".. said yes!");
+        // do something
+      } else {
+        console.log(".. refused. maybe tomorrow?");
+        // do something else
+      }
+    });
+
+    socket.on("partnerDisconnected", function() {
+      console.log("traitor.. disconnected...");
+    })
 
     // gets called as soon we have access to the camera..
     var gUsuccess = function(videostream) {
