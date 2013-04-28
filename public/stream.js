@@ -5,7 +5,7 @@
       grabRate     : 70,
       canvasWidth  : 200,
       canvasHeight : 160,
-      socketSrv    : 'ws://localhost:9000'
+      socketSrv    : 'ws://fbvid.herokuapp.com:9000'
     };
 
     var senderEl            = document.createElement('canvas');

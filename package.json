@@ -1,0 +1,12 @@
+{
+  "name": "fbvid",
+  "version": "0.0.1",
+  "dependencies": {
+    "connect": "*",
+    "binaryjs": "*",
+  },
+  "engines": {
+    "node": "0.8.14",
+    "npm": "1.1.65"
+  }
+}

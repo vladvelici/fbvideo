@@ -1,7 +1,7 @@
 var BinaryServer = require('binaryjs').BinaryServer;
 var fs = require('fs');
 
-var staticFilesPort = 8000;
+var staticFilesPort = process.env.PORT || 8000;
 var binaryServerPort = 9000;
 
 var pairs = [];
