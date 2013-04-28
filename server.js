@@ -15,7 +15,6 @@ var RoomManager = function() {
 var rooms = new RoomManager();
 var fbidSocket = {};
 
-
 io.sockets.on('connection', function (socket) {
 	
 	socket.on("addFbAuth", function(fbid) {
@@ -31,7 +30,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on("incomingCall", function(calledFbid) {
 		socket.get("fbid", function (error, fbid) {
 			if (!error && fbidSocket[calledFbid]) {
-				var partner = fbidSocket[calledFbid];
+				var partner = fbidSocket[calledFbid].me;
 				partner.emit("beingCalled", {by: fbid});
 				socket.emit("calling");
 			} else {
@@ -43,14 +42,14 @@ io.sockets.on('connection', function (socket) {
 	socket.on("iAnswered", function(data) {
 		// var rId = rooms.newId();
 		// socket.join(rId);
-		var partner = fbidSocket[data.partnerUid];
+		var partner = fbidSocket[data.partnerUid].me;
 		// partner.join(rId);
 		if (data.answer == "yes") {
 			socket.get("fbid", function(err, fbid) {
 				if (err) return;
-				fbidSocket[fbid].partner = fbidSocket[partnerUid];
+				fbidSocket[fbid].partner = fbidSocket[data.partnerUid].me;
 			});
-			fbidSocket[partnerUid].partner = socket;
+			fbidSocket[data.partnerUid].partner = socket;
 			partner.emit("partnerAnswered", "yes");
 		} else {
 			partner.emit("partnerAnswered", "no");
@@ -62,21 +61,22 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('videoIn', function (data) {
 		socket.get("fbid", function(err, fbid) {
-			if (err) return;
+			if (err || !fbid) return;
 			var partner = fbidSocket[fbid].partner;
-			partner.volatile.emit('videoOut', data);
+			if (partner !== null)
+				partner.volatile.emit('videoOut', data);
 		});
 	});
 
 	socket.on("disconnect", function() {
 		socket.get("fbid", function(err, fbid) {
-			if (fbidSocket.partner !== null) {
-				fbidSocket[fbid].partner.get("fbid", function(err, fbidf)) {
+			if (fbidSocket[fbid] && fbidSocket[fbid].partner !== null) {
+				fbidSocket[fbid].partner.get("fbid", function(err, fbidf) {
 					if (err) return;
 					fbidSocket[fbidf].partner = null;
 					fbidSocket[fbidf].emit("partnerDisconnected");
 					fbidSocket[fbid] = undefined;
-				}
+				});
 			} else {
 				fbidSocket[fbid] = undefined;
 			}

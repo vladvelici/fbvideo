@@ -32,7 +32,6 @@ var sockOperations = {};
     videoEl.width = settings.canvasWidth;
     videoEl.height = settings.canvasHeight;
 
-
     // the stream is ready
     socket.on('hi', function(data) {
       console.log("connected.", data);
@@ -68,11 +67,11 @@ var sockOperations = {};
     };
 
     sockOperations.addFbAuth = function(fbid) {
-      socket.emit("addFbAuth", "fake432532");      
+      socket.emit("addFbAuth", fbid);      
     }
 
     socket.on("welcome", function() {
-      console.log("welcome received");
+      document.getElementById('fakeLogin').style.display = "none";
     });
 
     sockOperations.initCall = function(partner_fbid) {
@@ -103,7 +102,11 @@ var sockOperations = {};
 
     socket.on("partnerDisconnected", function() {
       console.log("traitor.. disconnected...");
-    })
+    });
+
+    sockOperations.answerCall = function(partnerUid, answer) {
+      socket.emit("iAnswered", {partnerUid: partnerUid, answer: answer});
+    };
 
     // gets called as soon we have access to the camera..
     var gUsuccess = function(videostream) {

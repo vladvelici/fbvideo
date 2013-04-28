@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="shims.js"></script>
 		<script src="http://localhost:9000/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="stream.js"></script>
-		
+		<script type="text/javascript" src="fakelogin.js"></script>
 		<script>
 			function convertCanvasToImage(canvas) {
 				var image = new Image();
@@ -45,6 +45,12 @@
 		</script>
 	</head>
 	<body>
+		<article id='fakeLogin'>
+			<form id='fakeLoginForm' action='javascript:void(0)'>
+				<input type='text' placeholder='login fbid' id='fake_fbuid' />
+				<input type='submit' value="fake log in" />
+			</form>
+		</article>
 		<div class="banner"><div class="title"><i>time to smile</i></div></div>
 		<div class="wrap">
 			<div class="senderwrap">
