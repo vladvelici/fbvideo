@@ -34,15 +34,18 @@ var settings = {
     // the stream is ready
     socket.on('hi', function(data) {
       console.log("connected.", data);
+      deleteloader($(".senderwrap"));
     });
 
     socket.on("newUser", function(data) {
       console.log("someone got in");
+      // deleteloader($(".senderwrap"));
     });
 
     socket.on("userDisconnected", function(data) {
       console.log("life's hard for someone. got out");
-    })
+      showloader($(".senderwrap"));
+    });
 
     socket.on('videoOut', function(data) {
       var img = document.createElement("img");
@@ -67,6 +70,8 @@ var settings = {
       videoEl.src = (window.URL || window.webkitURL).createObjectURL(videostream);
       videoEl.play();
       console.log('We have webcam access. yay');
+      deleteloader($(".receiverwrap"));
+
       setTimeout(grabLoop, settings.grabRate);
     };
 

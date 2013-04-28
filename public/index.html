@@ -6,7 +6,7 @@
 		
 		<title>Web Video Calls</title>
 		<script type="text/javascript" src="shims.js"></script>
-		<script src="http://cdn.binaryjs.com/0/binary.js"></script>
+		<script src="http://localhost:9000/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="stream.js"></script>
 		
 		<script>
@@ -17,8 +17,12 @@
 			}
 			
 			function deleteloader(videowrapper) {
-				$(".loader",videowrapper).remove(); 
+				$(".loader",videowrapper).css("opacity", "0"); 
 			}
+
+      function showloader(somewrapper) {
+        $(".loader",videowrapper).css("opacity", "1");  
+      }
 			
 			function endcall() {
 				alert("ending");
@@ -36,12 +40,7 @@
 				
 				$("#gamebut").click(function() {
 					//deleteloader($(".senderwrap"));
-				});
-				
-				deleteloader($(".senderwrap"));
-				deleteloader($(".receiverwrap"));
-				
-				initpong();
+				});				
 			});
 		</script>
 	</head>
@@ -49,7 +48,7 @@
 		<div class="banner"><div class="title"><i>time to smile</i></div></div>
 		<div class="wrap">
 			<div class="senderwrap">
-				<canvas width="600" height="450" class="videosender" id="sender"></canvas>
+				<canvas width="600" height="450" class="videosender" id="receiver"></canvas>
 				<div class="loader"></div>
 			</div>
 			<div class="clear"></div>
