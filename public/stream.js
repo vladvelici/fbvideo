@@ -2,10 +2,10 @@
   document.addEventListener('DOMContentLoaded', function() {
 
     var settings = {
-      grabRate     : 70,
+      grabRate     : 60,
       canvasWidth  : 200,
       canvasHeight : 160,
-      socketSrv    : 'ws://ec2-54-245-161-226.us-west-2.compute.amazonaws.com:9000'
+      socketSrv    : 'ws://localhost:9000'
     };
 
     var senderEl            = document.createElement('canvas');
@@ -17,12 +17,8 @@
     var receiverContext     = receiverEl.getContext('2d');
     var receiverDataLength  = settings.canvasWidth * settings.canvasHeight * 4;
     var receiverPos         = 0;
-    var transferRate        = Math.round(((1000 / settings.grabRate) * receiverDataLength / 1024), 2);
 
-    var client              = new BinaryClient(settings.socketSrv);
-    var stream;
-
-    var imageFrame          = receiverContext.getImageData(0,0,settings.canvasWidth,settings.canvasHeight);
+    var socket = io.connect("http://localhost:9000");
 
     senderEl.width          = settings.canvasWidth;
     senderEl.height         = settings.canvasHeight;
@@ -33,41 +29,34 @@
     videoEl.width           = settings.canvasWidth;
     videoEl.height          = settings.canvasHeight;
 
-    document.getElementById('message').innerHTML = 'Sending: ' + transferRate + ' KB / Sec<br />';
-    document.getElementById('message').innerHTML += 'Receiving: ' + transferRate + ' KB / Sec';
 
     // the stream is ready
-    client.on('open', function(s) {
-      stream = client.createStream(s, 'toserver');
+    socket.on('hi', function(data) {
+      console.log("connected.", data);
     });
 
-    client.on('stream', function(s, meta) {
-      if (meta === 'fromServer') {
-        s.on('data', function(data) {
-            console.log("got it back:", data);
-          // data is from the type 'ArrayBuffer'
-          // we need to build a Uint8Array out of it
-          // to be able to access the actual data
-              var img = document.createElement("img");
-              // img.src = (window.URL || window.webkitURL).createObjectURL(new Blob(data)); 
-              img.onload = function() {
-                console.log("img onload.");
-                receiverContext.drawImage(img, 0, 0, settings.canvasWidth, settings.canvasHeight);
-              }
-              img.src = data;    
-          // receiverContext.drawImage();
-        });
-        s.on('end', function(){
-          console.log("blob finished coming back");
-        });
+    socket.on("newUser", function(data) {
+      console.log("someone got in");
+    });
+
+    socket.on("userDisconnected", function(data) {
+      console.log("life's hard for someone. got out");
+    })
+
+    socket.on('videoOut', function(data) {
+      var img = document.createElement("img");
+      img.onload = function() {
+        console.log("img onload.");
+        receiverContext.drawImage(img, 0, 0, settings.canvasWidth, settings.canvasHeight);
       }
+      img.src = data.base64img;
     });
 
     var grabLoop = function() {
-      if (typeof stream === 'undefined') return;
+      if (typeof socket === 'undefined') return;
       senderContext.drawImage(videoEl,0,0,settings.canvasWidth,settings.canvasHeight);
       var sdata = senderEl.toDataURL("image/jpeg", 0.5);
-      stream.write(sdata);
+      socket.emit("videoIn", {"base64img": sdata});
       setTimeout(grabLoop, settings.grabRate);
     };
 
