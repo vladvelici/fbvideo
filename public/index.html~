@@ -39,7 +39,6 @@
 				});
 				
 				deleteloader($(".senderwrap"));
-				deleteloader($(".receiverwrap"));
 				
 				initpong();
 			});

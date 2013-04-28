@@ -1,0 +1,74 @@
+.contactlist{
+	width:600px;
+	list-style: none outside none;
+	margin:0;
+	padding:0;
+	outline: medium none !important;
+}
+.contactlist li{
+	display:block;
+	float: left;
+	width:200px;
+	height:210px;
+	position:relative;
+	margin:0;
+	padding:0;
+	white-space:nowrap;
+}
+.contactlist li .img{
+	width:180px;
+	height:180px;
+	background:black;
+	margin:0 10px;
+	box-shadow:0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.contactlist li .name{
+	color:181819;
+	font:16px/24px Arial,sans-serif;
+	margin:0 10px;
+	overflow:hidden;
+}
+a.goleft{
+	position:absolute;
+	height:100%;
+	left:0;
+	top:0;
+	box-shadow:64px 0 64px rgba(0, 0, 0, 0.2) inset;
+	background:no-repeat url("arrow_left.png") left center;
+	width:128px;
+	display:block;
+}
+a.goright{
+	position:absolute;
+	height:100%;
+	right:0;
+	top:0;
+	box-shadow:-64px 0 64px rgba(0, 0, 0, 0.2) inset;
+	background:no-repeat url("arrow_right.png") right center;
+	width:128px;
+	display:block;
+}
+a.goleft.inactive{
+	position:absolute;
+	height:100%;
+	left:0;
+	top:0;
+	box-shadow:64px 0 64px rgba(0, 0, 0, 0.2) inset;
+	background:no-repeat url("arrow_left.png") left center;
+	width:128px;
+	display:block;
+	opacity:0.5;
+	cursor:default;
+}
+a.goright.inactive{
+	position:absolute;
+	height:100%;
+	right:0;
+	top:0;
+	box-shadow:-64px 0 64px rgba(0, 0, 0, 0.2) inset;
+	background:no-repeat url("arrow_right.png") right center;
+	width:128px;
+	display:block;
+	opacity:0.5;
+	cursor:default;
+}
