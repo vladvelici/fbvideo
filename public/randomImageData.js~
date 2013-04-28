@@ -1,0 +1,28 @@
+var initRandomData = function (ctx, callback) {
+	var width = ctx.width;
+	var height = ctx.height;
+	
+	
+	for (var i=0;i<10;i++)
+	{
+		ctx.fillStyle=get_random_color();
+		
+		var xm = Math.random()*width;
+		var xM = Math.random()*width;
+		var ym = Math.random()*height;
+		var yM = Math.random()*height;
+		
+		ctx.fillRect(xm,ym,ym,yM);
+	}
+	
+	// setInterval();
+}
+
+function get_random_color() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.round(Math.random() * 15)];
+    }
+    return color;
+}
