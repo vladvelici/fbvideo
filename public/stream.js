@@ -1,12 +1,13 @@
+var settings = {
+  grabRate     : 150,
+  canvasWidth  : 200,
+  canvasHeight : 160,
+  socketSrv    : 'http://localhost:9000',
+  jpegQuality  : 0.3
+};
+
 (function(document) {
   document.addEventListener('DOMContentLoaded', function() {
-
-    var settings = {
-      grabRate     : 60,
-      canvasWidth  : 200,
-      canvasHeight : 160,
-      socketSrv    : 'ws://localhost:9000'
-    };
 
     var senderEl            = document.createElement('canvas');
     senderEl.id     = "sender";
@@ -18,7 +19,7 @@
     var receiverDataLength  = settings.canvasWidth * settings.canvasHeight * 4;
     var receiverPos         = 0;
 
-    var socket = io.connect("http://localhost:9000");
+    var socket = io.connect(settings.socketSrv);
 
     senderEl.width          = settings.canvasWidth;
     senderEl.height         = settings.canvasHeight;
@@ -55,8 +56,10 @@
     var grabLoop = function() {
       if (typeof socket === 'undefined') return;
       senderContext.drawImage(videoEl,0,0,settings.canvasWidth,settings.canvasHeight);
-      var sdata = senderEl.toDataURL("image/jpeg", 0.5);
-      socket.emit("videoIn", {"base64img": sdata});
+      // var sdata = senderEl.toDataURL("image/jpeg", settings.jpegQuality);
+      var webpData = senderEl.toDataURL("image/webp", settings.jpegQuality);
+
+      socket.emit("videoIn", {"base64img": webpData});
       setTimeout(grabLoop, settings.grabRate);
     };
 

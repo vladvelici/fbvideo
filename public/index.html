@@ -2,6 +2,7 @@
 <head>
   <title>Web Video Calls</title>
   <script type="text/javascript" src="shims.js"></script>
+  <script type="text/javascript" src='Iuppiter.js'></script>
 	<script src="http://localhost:9000/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="stream.js"></script>
 </head>
@@ -9,5 +10,17 @@
   <canvas id="receiver"></canvas>
   <video id="video"></video>
   <div id="message"></div>
+  <input id='jpegQuality' type='text' value='0.3'/>
+  <input id='interval' type='text' '160' />
+  <script type="text/javascript">
+  	var jpegQelement = document.getElementById("jpegQuality");
+  	var intervalElement = document.getElementById("interval");
+  	jpegQelement.addEventListener("change", function() {
+  		settings.jpegQuality = parseFloat(jpegQelement.value);
+  	});
+  	intervalElement.addEventListener("change", function() {
+  		settings.grabRate = parseInt(intervalElement.value);
+  	});
+  </script>
 </body>
 </html>
